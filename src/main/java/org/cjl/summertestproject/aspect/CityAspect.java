@@ -4,6 +4,7 @@ import org.cjl.summer.summermvc.annotation.*;
 import org.cjl.summer.summermvc.aop.aspect.JoinPoint;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * @Title: CityAspect
@@ -40,7 +41,7 @@ public class CityAspect {
         System.out.println("[Info] ServiceActionName: " + joinPoint.getMethod().getName()
                 + " , Args: "+ Arrays.toString(joinPoint.getArguments())
                 + " , TimeSpend: " + (endTime - startTime) + "ms"
-                + " , Result: " + obj.toString());
+                + " , Result: " + Optional.ofNullable(obj).orElse("no result").toString());
         return obj;
     }
 

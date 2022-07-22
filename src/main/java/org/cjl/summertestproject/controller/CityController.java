@@ -6,6 +6,7 @@ import org.cjl.summertestproject.domain.City;
 import org.cjl.summertestproject.service.CityService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Title: CityController
@@ -16,9 +17,16 @@ import java.util.List;
  * @Version: V1.0
  */
 @RestController("/city")
+@ConfigurationProperties(prefix = "city")
 public class CityController {
     @Autowired
-    CityService cityService;
+    private CityService cityService;
+
+    @Value("default.enabled")
+    private boolean enableDefault;
+
+    @Value("default.id")
+    private int defaultCityId;
 
     @PostMapping("/update_name")
     public City updateName(City city) {
@@ -33,6 +41,10 @@ public class CityController {
 
     @GetMapping("/{id}")
     public City getCityById(@PathVariable("id") Integer id) {
-        return cityService.getCityById(id);
+        City city = cityService.getCityById(id);
+        if (enableDefault && city ==null){
+            city = cityService.getCityById(defaultCityId);
+        }
+        return city;
     }
 }
